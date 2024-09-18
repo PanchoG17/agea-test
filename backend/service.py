@@ -60,7 +60,7 @@ class APIService():
         return result
 
     def __create_instance(self, result: dict, id_comparison: int) -> EndpointResult:
-        """Crea el nueva instancia EndpointResult para hacer bulk save"""
+        """Crea nueva instancia EndpointResult para hacer bulk save"""
 
         return EndpointResult(
             url = result['url'],
@@ -71,11 +71,10 @@ class APIService():
             comparison_id = id_comparison
         )
 
-
     # Public methods
     def get_comparison(self, data: ComparisonRequest):
         results = []
-        result_objects = []
+        results_objects = []
 
         comparison = Comparison()
         self.__db.add(comparison)
@@ -89,11 +88,11 @@ class APIService():
             result = self.__fetch_api(params)
             result_object = self.__create_instance(result, comparison.id)
 
-            result_objects.append(result_object)
+            results_objects.append(result_object)
             results.append(result)
 
         # Bulk save
-        self.__db.bulk_save_objects(result_objects)
+        self.__db.bulk_save_objects(results_objects)
         self.__db.commit()
 
         return results
