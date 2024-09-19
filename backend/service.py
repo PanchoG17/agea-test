@@ -64,8 +64,8 @@ class APIService():
 
         return EndpointResult(
             url = result['url'],
-            speed_index = result['metrics']['speed_index']['numeric_value'],
-            time_to_interactive = result['metrics']['time_to_interactive']['numeric_value'],
+            speed_index = result['metrics']['speed_index']['numeric_value'] if result.get('metrics') else None,
+            time_to_interactive = result['metrics']['time_to_interactive']['numeric_value'] if result.get('metrics') else None,
             status = result['status'],
             message = result['message'] if result['status'] == 'error' else None,
             comparison_id = id_comparison

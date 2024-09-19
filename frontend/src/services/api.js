@@ -10,7 +10,7 @@ const APISpeed = axios.create({
 })
 
 
-export const getComparison = () => APISpeed.post('/api/compare-endpoints');
+export const getComparison = (payload) => APISpeed.post('/api/compare-endpoints', payload);
 // export const endpoint2 = () => APISpeed.post('/api/endpoint2');
 // export const endpoint3 = () => APISpeed.post('/api/endpoint3');
 // export const endpointN = () => APISpeed.post('/api/endpointN');
