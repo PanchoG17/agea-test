@@ -70,11 +70,29 @@ class APIService():
             message = result['message'] if result['status'] == 'error' else None,
             comparison_id = id_comparison
         )
+    
+    def __get_winner(self, result: dict, best_si: float, best_tti: float, winner_url: str) -> tuple:
+        """Compara el resultado actual con el mejor actual y devuelve el ganador"""
+        
+        if result['status'] == 'success':
+            si  = result['metrics']['speed_index']['numeric_value']
+            tti = result['metrics']['time_to_interactive']['numeric_value']
+
+            if best_si is None or si < best_si:
+                # Nuevos datos del ganador
+                return si, tti, result['url']
+
+        # Datos existenes                
+        return best_si, best_tti, winner_url
+
 
     # Public methods
     def get_comparison(self, data: ComparisonRequest):
         results = []
         results_objects = []
+        best_si = 999999999
+        best_tti = 999999999
+        winner_url = None
 
         comparison = Comparison()
         self.__db.add(comparison)
@@ -87,6 +105,7 @@ class APIService():
             }
             result = self.__fetch_api(params)
             result_object = self.__create_instance(result, comparison.id)
+            best_si, best_tti, winner_url = self.__get_winner(result, best_si, best_tti, winner_url)
 
             results_objects.append(result_object)
             results.append(result)
@@ -95,4 +114,9 @@ class APIService():
         self.__db.bulk_save_objects(results_objects)
         self.__db.commit()
 
-        return results
+        final_result = {
+            "results": results,
+            "winner": winner_url
+        }
+
+        return final_result
