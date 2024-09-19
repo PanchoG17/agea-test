@@ -110,6 +110,8 @@ class APIService():
             results_objects.append(result_object)
             results.append(result)
 
+        comparison.winner = winner_url
+
         # Bulk save
         self.__db.bulk_save_objects(results_objects)
         self.__db.commit()

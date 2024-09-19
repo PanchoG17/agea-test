@@ -6,23 +6,23 @@ from db_config import Base
 
 
 class Comparison(Base):
-    __tablename__ = 'comparisons'
+    __tablename__           = 'comparisons'
     
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    created_at = Column(DateTime, default=datetime.now)
+    id                      = Column(Integer, primary_key=True, autoincrement=True)
+    created_at              = Column(DateTime, default=datetime.now)
+    winner                  = Column(Text, nullable=True)
 
-    results = relationship('EndpointResult', back_populates='comparison', uselist=True)
+    results                 = relationship('EndpointResult', back_populates='comparison', uselist=True)
 
-# Define the EndpointResult model
 class EndpointResult(Base):
-    __tablename__ = 'comparisons_results'
+    __tablename__           = 'comparisons_results'
     
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    url = Column(String(100), nullable=False)
-    speed_index = Column(Float, nullable=True)
-    time_to_interactive = Column(Float, nullable=True)
-    status = Column(String(100), nullable=False)
-    message = Column(Text, nullable=True)
-    comparison_id = Column(Integer, ForeignKey('comparisons.id'))
+    id                      = Column(Integer, primary_key=True, autoincrement=True)
+    url                     = Column(String(100), nullable=False)
+    speed_index             = Column(Float, nullable=True)
+    time_to_interactive     = Column(Float, nullable=True)
+    status                  = Column(String(100), nullable=False)
+    message                 = Column(Text, nullable=True)
+    comparison_id           = Column(Integer, ForeignKey('comparisons.id'))
     
-    comparison = relationship('Comparison', back_populates='results', uselist=False)
+    comparison              = relationship('Comparison', back_populates='results', uselist=False)
