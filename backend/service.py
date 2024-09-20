@@ -13,7 +13,7 @@ class APIService:
 
     def __init__(self, db: Session):
         self.__db = db
-        self.__api_endpoint = os.environ.get("API_ENDPOINT")
+        self.__api_endpoint = f"{os.environ.get('API_ENDPOINT')}?key={os.environ.get('API_KEY')}"
 
     # Private methods
     async def __fetch_api(self, params: dict) -> dict:
