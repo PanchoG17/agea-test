@@ -13,10 +13,10 @@ api_router = APIRouter()
     status_code=200,
     dependencies=[Depends(validate_api_key)],
 )
-def compare_endpoints(urls: ComparisonRequest, db: Session = Depends(get_db)):
+async def compare_endpoints(urls: ComparisonRequest, db: Session = Depends(get_db)):
     try:
         api_service = APIService(db=db)
-        response = api_service.get_comparison(urls)
+        response = await api_service.get_comparison(urls)
         return response
 
     except Exception as e:
