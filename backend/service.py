@@ -33,6 +33,7 @@ class APIService:
                     return {
                         "url": params['url'],
                         "status": "success",
+                        "device": data['lighthouseResult']['configSettings']['emulatedFormFactor'],
                         "metrics": {
                             "speed_index": {
                                 "display_value": speed_index['displayValue'],
@@ -77,6 +78,7 @@ class APIService:
 
         return EndpointResult(
             url = result['url'],
+            device = result['device'],
             speed_index = result['metrics']['speed_index']['numeric_value'] if result.get('metrics') else None,
             time_to_interactive = result['metrics']['time_to_interactive']['numeric_value'] if result.get('metrics') else None,
             status = result['status'],
@@ -110,8 +112,8 @@ class APIService:
 
         for url in data.urls:
             params = {
-                "url": url,
-                "strategy": "desktop",
+                "url": url.path,
+                "strategy": url.device.lower(),
             }
             tasks.append(self.__fetch_api(params))
 

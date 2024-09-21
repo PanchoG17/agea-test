@@ -70,7 +70,7 @@ Follow these steps to run the project:
     ```
 3. #### Navigate into repository:
     ```bash
-    cd agea_test
+    cd agea-test
     ```
 4. #### Build & Run docker-compose project:
     ```bash

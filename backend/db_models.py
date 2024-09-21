@@ -19,9 +19,10 @@ class EndpointResult(Base):
     
     id                      = Column(Integer, primary_key=True, autoincrement=True)
     url                     = Column(String(100), nullable=False)
+    device                  = Column(String(100), nullable=True)
+    status                  = Column(String(100), nullable=False)
     speed_index             = Column(Float, nullable=True)
     time_to_interactive     = Column(Float, nullable=True)
-    status                  = Column(String(100), nullable=False)
     message                 = Column(Text, nullable=True)
     comparison_id           = Column(Integer, ForeignKey('comparisons.id'))
     

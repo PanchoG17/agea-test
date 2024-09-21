@@ -1,5 +1,9 @@
-from pydantic import BaseModel, HttpUrl, Field
+from pydantic import BaseModel, HttpUrl
 from typing import List
 
+class UrlDevice(BaseModel):
+    path: HttpUrl
+    device: str
+
 class ComparisonRequest(BaseModel):
-    urls: List[HttpUrl] = Field(..., min_items=2)
+    urls: List[UrlDevice]
