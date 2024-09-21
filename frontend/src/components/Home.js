@@ -9,12 +9,23 @@ const Home = () => {
   const [error, setError] = useState(null);
   const [url1, setUrl1] = useState('');
   const [url2, setUrl2] = useState('');
+  const [device1, setDevice1] = useState('desktop');
+  const [device2, setDevice2] = useState('desktop');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const payload = {
-      urls: [url1, url2]
+      urls: [
+      {
+        path: url1,
+        device: device1
+      },
+      {
+        path: url2,
+        device: device2
+      }
+      ]
     };
 
     try {
@@ -32,9 +43,12 @@ const Home = () => {
     }
   };
 
+  const toggleDevice = (deviceSetter, currentDevice) => {
+    deviceSetter(currentDevice === 'desktop' ? 'mobile' : 'desktop');
+  };
+
   return (
     <div className="container">
-
 
         {/* Form */}
         <div className="card mt-5">
@@ -61,6 +75,14 @@ const Home = () => {
                               onChange={(e) => setUrl1(e.target.value)}
                               required
                             />
+                            <button
+                              type="button"
+                              data-tooltip={device1}
+                              className={`btn ${device1 === 'desktop' ? 'btn-danger' : 'btn-warning'} mx-2`}
+                              onClick={() => toggleDevice(setDevice1, device1)}
+                            >
+                              <Icon icon={device1 === 'desktop' ? 'mdi:monitor' : 'mdi:cellphone'} style={{fontSize:"30px"}} />
+                            </button>
                           </div>
                       </div>
                       <div>
@@ -75,6 +97,14 @@ const Home = () => {
                               onChange={(e) => setUrl2(e.target.value)}
                               required
                             />
+                            <button
+                              type="button"
+                              data-tooltip={device2}
+                              className={`btn ${device2 === 'desktop' ? 'btn-danger' : 'btn-warning'} mx-2`}
+                              onClick={() => toggleDevice(setDevice2, device2)}
+                            >
+                              <Icon icon={device2 === 'desktop' ? 'mdi:monitor' : 'mdi:cellphone'} style={{fontSize:"30px"}} />
+                            </button>
                           </div>
                       </div>
                   </div>
@@ -105,8 +135,9 @@ const Home = () => {
                   <div className="card mb-4">
                     <div className={`d-flex justify-content-between card-header text-white ${result.url === data.winner ? 'bg-success' : 'bg-danger'}`}>
                       <div className="">
-                        <h4>URL: {result.url}</h4>
-                        <p>Status: {result.status}</p>  
+                        <h4 className="mb-1"><strong>URL:</strong>{result.url}</h4>
+                        <p className="mb-0"><strong>Status:</strong> {result.status}</p>  
+                        <p className="mb-0"><strong>Device:</strong> {result.device}</p>  
                       </div>
                       <Icon 
                         icon={`${result.url === data.winner ? 'pepicons-pencil:thumbs-up-circle' : 'pepicons-pencil:thumbs-down-circle'}`}
