@@ -1,8 +1,8 @@
 # Fullstack Application - FastAPI, React, MySQL with Docker
 
-👋 Welcome to the **Ultimate Web Racer** project! This application provides a React interface where users can input URLs to be compared. It connects to a FastAPI backend, which asynchronously communicates with the Google Pagespeed API to evaluate the URL performance. Backend processes these responses, determines the fastest URL, store the results in database and returns them back to the React frontend for display...
+👋 Welcome to the **Ultimate Web Racer** project! This application provides a React interface where users can input URLs and type of device to be compared. It connects to a FastAPI backend, which asynchronously communicates with the Google Pagespeed API to evaluate the URL performance. Backend processes these responses, determines the fastest URL, store the results in database and returns them back to the React frontend for display...
 
-<img src="https://aws-random-files.s3.us-west-2.amazonaws.com/UWR.PNG" />
+<img src="https://aws-random-files.s3.us-west-2.amazonaws.com/UWR1.PNG" />
 
 ## 📑 Table of Contents
 
@@ -87,12 +87,11 @@ Once the application is up and running, you can access:
 
 ## <a id="suggestions">🎯 Suggestions </a>
 
-- Frontend: Add a dynamic "Add URL" button to allow users to input and compare multiple URLs beyond two.
 - Frontend: Display HTTP 422 Errors in error message.
 - Backend: Create a new API endpoint to retrieve the history of URL comparisons made by users.
 - Testing: Add unit and integration tests to ensure the functionality of both the comparison logic and history retrieval.
 - Security: Add authentication or rate-limiting to the backend to prevent misuse of the comparison feature.
-- Security: Remove enviroment variables from repo.
+- Security: Remove enviroment variables from repository.
 - Optimization: Consider using caching to store recent comparison results to improve performance when comparing the same URLs repeatedly.
 
 

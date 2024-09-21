@@ -8,3 +8,11 @@
     padding: .25em;
     color: black;
 }
+
+body{
+    background-color: #cfe2ff!important;
+}
+
+form > .card-body{
+    background-color: #052c65!important;
+}

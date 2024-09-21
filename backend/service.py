@@ -78,7 +78,7 @@ class APIService:
 
         return EndpointResult(
             url = result['url'],
-            device = result['device'],
+            device = result['device'] if result.get('device') else None,
             speed_index = result['metrics']['speed_index']['numeric_value'] if result.get('metrics') else None,
             time_to_interactive = result['metrics']['time_to_interactive']['numeric_value'] if result.get('metrics') else None,
             status = result['status'],
@@ -110,10 +110,10 @@ class APIService:
         self.__db.add(comparison)
         self.__db.commit()
 
-        for url in data.urls:
+        for u in data.urls:
             params = {
-                "url": url.path,
-                "strategy": url.device.lower(),
+                "url": u.url,
+                "strategy": u.device.lower(),
             }
             tasks.append(self.__fetch_api(params))
 

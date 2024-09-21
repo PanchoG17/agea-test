@@ -33,7 +33,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"urls\":[\r\n        \"https://wikipedia.com\",\r\n        \"https://google.com\",\r\n        \"https://suservicio.com.ar\",\r\n        \"https://taringa.net\",\r\n        \"https://chatgpt.com/\",\r\n        \"https://markdownlivepreview.com/\",\r\n        \"https://stackoverflow.com/\",\r\n        \"https://www.argentina.gob.ar/\"\r\n    ]\r\n}",
+					"raw": "{\r\n    \"urls\": [\r\n        {\r\n            \"url\": \"https://wikipedia.com\",\r\n            \"device\": \"mobile\"\r\n        },\r\n        {\r\n            \"url\": \"https://google.com\",\r\n            \"device\": \"desktop\"\r\n        },\r\n        {\r\n            \"url\": \"https://suservicio.com.ar\",\r\n            \"device\": \"desktop\"\r\n        },\r\n        {\r\n            \"url\": \"https://taringa.net\",\r\n            \"device\": \"mobile\"\r\n        },\r\n        {\r\n            \"url\": \"https://stackoverflow.com\",\r\n            \"device\": \"mobile\"\r\n        }\r\n    ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -44,10 +44,7 @@
 					"raw": "http://localhost:8000/api/compare-endpoints",
 					"protocol": "http",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"localhost"
 					],
 					"port": "8000",
 					"path": [

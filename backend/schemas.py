@@ -2,7 +2,7 @@ from pydantic import BaseModel, HttpUrl
 from typing import List
 
 class UrlDevice(BaseModel):
-    path: HttpUrl
+    url: HttpUrl
     device: str
 
 class ComparisonRequest(BaseModel):

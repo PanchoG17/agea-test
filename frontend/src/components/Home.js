@@ -7,32 +7,41 @@ const Home = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [url1, setUrl1] = useState('');
-  const [url2, setUrl2] = useState('');
-  const [device1, setDevice1] = useState('desktop');
-  const [device2, setDevice2] = useState('desktop');
+  const [urlInputs, setUrlInputs] = useState([{ url: 'https://', device: 'desktop' }, { url: 'https://', device: 'desktop' }]);
 
+  // Handle url changes
+  const handleChange = (index, value) => {
+    const newUrlInputs = [...urlInputs];
+    newUrlInputs[index].url = value;
+    setUrlInputs(newUrlInputs);
+  };
+  // Toggle device change
+  const toggleDevice = (index) => {
+    const newUrlInputs = [...urlInputs];
+    newUrlInputs[index].device = newUrlInputs[index].device === 'desktop' ? 'mobile' : 'desktop';
+    setUrlInputs(newUrlInputs);
+  };
+  // Add input URL
+  const addUrlInput = () => {
+    setUrlInputs([...urlInputs, { url: 'https://', device: 'desktop' }]);
+  };
+  // Remove input URL
+  const removeUrlInput = (index) => {
+    if (urlInputs.length > 2) {
+      const newUrlInputs = urlInputs.filter((_, i) => i !== index);
+      setUrlInputs(newUrlInputs);
+    }
+  };
+
+  // Handle submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const payload = {
-      urls: [
-      {
-        path: url1,
-        device: device1
-      },
-      {
-        path: url2,
-        device: device2
-      }
-      ]
-    };
 
     try {
       setData([]);
       setLoading(true)
       setError(null)
-      const response = await getComparison(payload);
+      const response = await getComparison({urls: urlInputs});
       setData(response.data);
     } 
     catch (err) {
@@ -43,9 +52,6 @@ const Home = () => {
     }
   };
 
-  const toggleDevice = (deviceSetter, currentDevice) => {
-    deviceSetter(currentDevice === 'desktop' ? 'mobile' : 'desktop');
-  };
 
   return (
     <div className="container">
@@ -60,53 +66,45 @@ const Home = () => {
                   </div>
                   <h2>Choose your runners:</h2>
               </div>
-              <div className="card-body bg-success text-white px-3 py-4">
+              <div className="card-body text-white px-3 py-4">
                   {error && <div className="alert alert-danger">{error}</div>}
-                  <div>
-                      <div className="mb-3">
-                          <div className="d-flex">
-                            <Icon icon="emojione:racing-car" className='my-auto mx-1 h1'/>
-                            <input
-                              type="url"
-                              className="form-control"
-                              id="url_1"
-                              placeholder="Ingrese la URL 1"
-                              value={url1}
-                              onChange={(e) => setUrl1(e.target.value)}
-                              required
-                            />
-                            <button
-                              type="button"
-                              data-tooltip={device1}
-                              className={`btn ${device1 === 'desktop' ? 'btn-danger' : 'btn-warning'} mx-2`}
-                              onClick={() => toggleDevice(setDevice1, device1)}
-                            >
-                              <Icon icon={device1 === 'desktop' ? 'mdi:monitor' : 'mdi:cellphone'} style={{fontSize:"30px"}} />
-                            </button>
-                          </div>
+                  {urlInputs.map((input, index) => (
+                    <div key={index} className="mb-3">
+                      <div className="d-flex">
+                        <Icon icon="emojione:racing-car" className="my-auto mx-1 h1" />
+                        <input
+                          type="url"
+                          className="form-control"
+                          placeholder={`Ingrese la URL ${index + 1}`}
+                          name="url"
+                          value={input.url}
+                          onChange={(e) => handleChange(index, e.target.value)}
+                          required
+                        />
+                        <button
+                          type="button"
+                          className={`btn ${input.device === 'desktop' ? 'btn-danger' : 'btn-warning'} ms-2`}
+                          onClick={() => toggleDevice(index)}
+                        >
+                          <Icon icon={input.device === 'desktop' ? 'mdi:monitor' : 'mdi:cellphone'} style={{ fontSize: "25px" }} />
+                        </button>
+                        
+                        <button 
+                          type="button" 
+                          className="btn btn-danger ms-2" 
+                          onClick={() => removeUrlInput(index)}
+                          disabled={urlInputs.length <= 2}
+                        >
+                          <Icon icon="ph:trash" style={{ fontSize: "25px" }} />
+                        </button>
+                      
                       </div>
-                      <div>
-                          <div className="d-flex">
-                            <Icon icon="emojione:racing-car" className='my-auto mx-1 h1'/>
-                            <input
-                              type="url"
-                              className="form-control"
-                              id="url_2"
-                              placeholder="Ingrese la URL 2"
-                              value={url2}
-                              onChange={(e) => setUrl2(e.target.value)}
-                              required
-                            />
-                            <button
-                              type="button"
-                              data-tooltip={device2}
-                              className={`btn ${device2 === 'desktop' ? 'btn-danger' : 'btn-warning'} mx-2`}
-                              onClick={() => toggleDevice(setDevice2, device2)}
-                            >
-                              <Icon icon={device2 === 'desktop' ? 'mdi:monitor' : 'mdi:cellphone'} style={{fontSize:"30px"}} />
-                            </button>
-                          </div>
-                      </div>
+                    </div>
+                  ))}
+                  <div className="d-flex justify-content-end">
+                    <button type="button" className="btn btn-primary ms-2" onClick={addUrlInput} disabled={urlInputs.length >= 10}>
+                      <Icon icon="typcn:plus" style={{ fontSize: "25px" }} />
+                    </button>
                   </div>
               </div>
               <div className="card-footer bg-dark py-3 d-flex justify-content-center">
@@ -135,7 +133,7 @@ const Home = () => {
                   <div className="card mb-4">
                     <div className={`d-flex justify-content-between card-header text-white ${result.url === data.winner ? 'bg-success' : 'bg-danger'}`}>
                       <div className="">
-                        <h4 className="mb-1"><strong>URL:</strong>{result.url}</h4>
+                        <h4 className="mb-1"><strong>URL:</strong> {result.url}</h4>
                         <p className="mb-0"><strong>Status:</strong> {result.status}</p>  
                         <p className="mb-0"><strong>Device:</strong> {result.device}</p>  
                       </div>
