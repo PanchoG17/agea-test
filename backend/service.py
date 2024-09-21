@@ -17,9 +17,9 @@ class APIService:
 
     # Private methods
     async def __fetch_api(self, params: dict) -> dict:
-        """Realiza llamado async al endpoint de API de Google Pagespeed"""
+        """Realiza llamado async a API Google Pagespeed"""
 
-        async with httpx.AsyncClient(timeout=httpx.Timeout(30.0, connect=30.0)) as client:
+        async with httpx.AsyncClient(timeout=httpx.Timeout(20.0, connect=5.0)) as client:
             try:
                 print(f"Fetching API for URL: {params['url']}")
                 response = await client.get(url=self.__api_endpoint, params=params)

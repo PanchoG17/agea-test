@@ -1,0 +1,62 @@
+{
+	"info": {
+		"_postman_id": "78c5bec2-119c-41e0-9411-d2818cdad979",
+		"name": "agea-test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15123684"
+	},
+	"item": [
+		{
+			"name": "compare-endpoints",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "dcdd234887ef",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-API-KEY",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"urls\":[\r\n        \"https://wikipedia.com\",\r\n        \"https://google.com\",\r\n        \"https://suservicio.com.ar\",\r\n        \"https://taringa.net\",\r\n        \"https://chatgpt.com/\",\r\n        \"https://markdownlivepreview.com/\",\r\n        \"https://stackoverflow.com/\",\r\n        \"https://www.argentina.gob.ar/\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/compare-endpoints",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"compare-endpoints"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
