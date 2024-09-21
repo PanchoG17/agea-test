@@ -1,6 +1,7 @@
 [data-tooltip]:hover::after {
     display: block;
     position: absolute;
+    z-index: 1;
     content: attr(data-tooltip);
     border: 1px solid black;
     border-radius: 5px;

@@ -96,13 +96,15 @@ const Home = () => {
                         />
                         <button
                           type="button"
+                          data-tooltip={input.device}
                           className={`btn ${input.device === 'desktop' ? 'btn-danger' : 'btn-warning'} ms-2`}
                           onClick={() => toggleDevice(index)}
                         >
                           <Icon icon={input.device === 'desktop' ? 'mdi:monitor' : 'mdi:cellphone'} style={{ fontSize: "25px" }} />
                         </button>
                         <button 
-                          type="button" 
+                          type="button"
+                          data-tooltip="delete"
                           className="btn btn-danger ms-2" 
                           onClick={() => removeUrlInput(index)}
                           disabled={urlInputs.length <= 2}
@@ -142,7 +144,7 @@ const Home = () => {
               {data.results.map((result, index) => (
                 <div className="col-md-6" key={index}>
                   <div className="card mb-4">
-                    <div className={`d-flex justify-content-between card-header text-white ${result.url === data.winner ? 'bg-success' : 'bg-danger'}`}>
+                    <div className={`d-flex justify-content-between card-header overflow-hidden text-white ${result.url === data.winner ? 'bg-success' : 'bg-danger'}`}>
                       <div className="">
                         <h4 className="mb-1"><strong>URL:</strong> {result.url}</h4>
                         <p className="mb-0"><strong>Status:</strong> <span className="text-capitalize">{result.status}</span></p>  
