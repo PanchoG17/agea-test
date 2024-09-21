@@ -18,7 +18,7 @@ class EndpointResult(Base):
     __tablename__           = 'comparisons_results'
     
     id                      = Column(Integer, primary_key=True, autoincrement=True)
-    url                     = Column(String(100), nullable=False)
+    url                     = Column(String(255), nullable=False)
     device                  = Column(String(100), nullable=True)
     status                  = Column(String(100), nullable=False)
     speed_index             = Column(Float, nullable=True)

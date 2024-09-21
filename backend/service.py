@@ -15,6 +15,7 @@ class APIService:
         self.__db = db
         self.__api_endpoint = f"{os.environ.get('API_ENDPOINT')}?key={os.environ.get('API_KEY')}"
 
+
     # Private methods
     async def __fetch_api(self, params: dict) -> dict:
         """Realiza llamado async a API Google Pagespeed"""
@@ -51,7 +52,7 @@ class APIService:
                     return {
                         "url": params['url'],
                         "status": "error",
-                        "message": f"Error fetching metrics: {response.text}"
+                        "message": self.__format_exception(response)
                     }
                 
             except httpx.ReadTimeout:
@@ -73,6 +74,18 @@ class APIService:
                     "message": f"Error fetching metrics: {str(e)}"
                 }
 
+    def __get_winner(self, result: dict, best_si: float, best_tti: float, winner_url: str) -> tuple:
+        """Compara iteración actual con el mejor actual y devuelve el mejor de los dos"""
+
+        if result['status'] == 'success':
+            si = result['metrics']['speed_index']['numeric_value']
+            tti = result['metrics']['time_to_interactive']['numeric_value']
+
+            if best_si is None or si < best_si:
+                return si, tti, result['url']
+
+        return best_si, best_tti, winner_url
+
     def __create_instance(self, result: dict, id_comparison: int) -> EndpointResult:
         """Crea nueva instancia EndpointResult para hacer bulk save"""
 
@@ -86,17 +99,24 @@ class APIService:
             comparison_id = id_comparison
         )
     
-    def __get_winner(self, result: dict, best_si: float, best_tti: float, winner_url: str) -> tuple:
-        """Compara el resultado actual con el mejor actual y devuelve el ganador"""
+    def __format_exception(self, response):
+        """Formatea excepciones del llamado a la API"""
 
-        if result['status'] == 'success':
-            si = result['metrics']['speed_index']['numeric_value']
-            tti = result['metrics']['time_to_interactive']['numeric_value']
+        if hasattr(response, 'json'):
+            try:
+                error_data = response.json()
+                error_message = error_data.get("error", {}).get("message", "Unknown error occurred.")
+                error_code = error_data.get("error", {}).get("code", "Unknown code.")
+            except ValueError:
+                error_message = response.text
+                error_code = "Unknown code."
+        else:
+            error_message = "Response object does not have a JSON method."
+            error_code = "Unknown code."
 
-            if best_si is None or si < best_si:
-                return si, tti, result['url']
-
-        return best_si, best_tti, winner_url
+        message = f"CODE {error_code}: {error_message}"
+        return message
+    
 
     # Public methods
     async def get_comparison(self, data: ComparisonRequest):

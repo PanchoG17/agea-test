@@ -6,7 +6,7 @@ import { getComparison } from '../services/api'
 const Home = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState([]);
   const [urlInputs, setUrlInputs] = useState([{ url: 'https://', device: 'desktop' }, { url: 'https://', device: 'desktop' }]);
 
   // Handle url changes
@@ -45,8 +45,17 @@ const Home = () => {
       setData(response.data);
     } 
     catch (err) {
-      setError(err.message);
-    } 
+      // Handling error message
+      if (err.response && err.response.data && err.response.data.detail) {
+          const formattedErrors = err.response.data.detail.map((errItem) => ({
+              index: errItem.loc[2],
+              msg: errItem.msg
+          }));
+          setError(formattedErrors);
+      } else {
+          setError([{ index: null, msg: err.message }]);
+      }
+  }
     finally {
       setLoading(false);
     }
@@ -67,9 +76,13 @@ const Home = () => {
                   <h2>Choose your runners:</h2>
               </div>
               <div className="card-body text-white px-3 py-4">
-                  {error && <div className="alert alert-danger">{error}</div>}
                   {urlInputs.map((input, index) => (
                     <div key={index} className="mb-3">
+                      {Array.isArray(error) && error.some(err => err.index === index) && (
+                          <label className="text-danger ms-4 ms-md-5">
+                              {error.find(err => err.index === index).msg}
+                          </label>
+                      )}
                       <div className="d-flex">
                         <Icon icon="emojione:racing-car" className="my-auto mx-1 h1" />
                         <input
@@ -88,7 +101,6 @@ const Home = () => {
                         >
                           <Icon icon={input.device === 'desktop' ? 'mdi:monitor' : 'mdi:cellphone'} style={{ fontSize: "25px" }} />
                         </button>
-                        
                         <button 
                           type="button" 
                           className="btn btn-danger ms-2" 
@@ -97,7 +109,6 @@ const Home = () => {
                         >
                           <Icon icon="ph:trash" style={{ fontSize: "25px" }} />
                         </button>
-                      
                       </div>
                     </div>
                   ))}
@@ -134,8 +145,8 @@ const Home = () => {
                     <div className={`d-flex justify-content-between card-header text-white ${result.url === data.winner ? 'bg-success' : 'bg-danger'}`}>
                       <div className="">
                         <h4 className="mb-1"><strong>URL:</strong> {result.url}</h4>
-                        <p className="mb-0"><strong>Status:</strong> {result.status}</p>  
-                        <p className="mb-0"><strong>Device:</strong> {result.device}</p>  
+                        <p className="mb-0"><strong>Status:</strong> <span className="text-capitalize">{result.status}</span></p>  
+                        <p className="mb-0"><strong>Device:</strong> <span className="text-capitalize">{result.device}</span></p>  
                       </div>
                       <Icon 
                         icon={`${result.url === data.winner ? 'pepicons-pencil:thumbs-up-circle' : 'pepicons-pencil:thumbs-down-circle'}`}
@@ -160,9 +171,7 @@ const Home = () => {
                         (
                           <>
                             <h5 className="card-title">Error message:</h5>
-                            <p>
-                              {result.message}
-                            </p>
+                            <p>{result.message}</p>
                           </>
                         )
                       }

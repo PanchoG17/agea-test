@@ -87,7 +87,7 @@ Once the application is up and running, you can access:
 
 ## <a id="suggestions">🎯 Suggestions </a>
 
-- Frontend: Display HTTP 422 Errors in error message.
+- Frontend: Component for comparisons history table
 - Backend: Create a new API endpoint to retrieve the history of URL comparisons made by users.
 - Testing: Add unit and integration tests to ensure the functionality of both the comparison logic and history retrieval.
 - Security: Add authentication or rate-limiting to the backend to prevent misuse of the comparison feature.
