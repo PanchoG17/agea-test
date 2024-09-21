@@ -14,4 +14,4 @@ COPY . .
 
 EXPOSE 8000
 
-CMD ["/wait-for-it.sh", "db:3306", "--", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["/wait-for-it.sh", "db:3306", "-t", "0", "--", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

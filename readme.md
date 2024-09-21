@@ -45,6 +45,7 @@ project
   │    └── Dockerfile ──────────────────── Dockerfile for frontend
   │
   ├── .env ─────────────────────────────── .env file for db service
+  ├── init.sql ─────────────────────────── create agea_test database on first startup
   └── docker-compose.yml ───────────────── docker-compose to build & run project
 ```
 
